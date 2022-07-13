@@ -1,5 +1,6 @@
 package de.tum.in.ase.eist;
 
+import java.util.Arrays;
 import java.util.regex.*;
 
 import org.springframework.stereotype.Service;
@@ -8,9 +9,11 @@ import org.springframework.stereotype.Service;
 public class QueryProcessor {
 
     Pattern plus = Pattern.compile(".*what is (\\d+) plus (\\d+).*");
+    Pattern max = Pattern.compile(".*which of the following numbers is the largest: ([\\d, ]*)");
 
     public String process(String query) {
         var plusmatcher = plus.matcher(query);
+        var maxmatcher = plus.matcher(query);
         query = query.toLowerCase();
         if (query.contains("shakespeare")) {
             return "William Shakespeare (26 April 1564 - 23 April 1616) was an " +
@@ -20,6 +23,8 @@ public class QueryProcessor {
             return query.substring(0, query.indexOf(":"));
         } else if (plusmatcher.matches()) {
             return "" + (Integer.valueOf(plusmatcher.group(1)) + Integer.valueOf(plusmatcher.group(2)));
+        } else if (maxmatcher.matches()) {
+            return "" + Arrays.stream(maxmatcher.group(1).split(", ")).mapToInt(Integer::valueOf).max().getAsInt();
         } else { // TODO extend the programm here
             return "";
         }
