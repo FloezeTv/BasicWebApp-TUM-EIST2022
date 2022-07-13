@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QueryProcessor {
 
-    Pattern plus = Pattern.compile("what is (\\d+) plus (\\d+)");
+    Pattern plus = Pattern.compile(".*what is (\\d+) plus (\\d+).*");
 
     public String process(String query) {
         var plusmatcher = plus.matcher(query);
